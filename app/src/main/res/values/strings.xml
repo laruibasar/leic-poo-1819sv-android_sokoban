@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Sokoban</string>
+    <string name="restart">Recomeçar</string>
+    <string name="ok">Ok</string>
+    <string name="level">Nível</string>
+    <string name="moves">Movimentos</string>
+    <string name="boxes">Caixas</string>
+</resources>
