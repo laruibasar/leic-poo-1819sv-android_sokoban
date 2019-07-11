@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.IOException;
+
 import pt.isel.poo.li21n.g1.sokoban.R;
 import pt.isel.poo.li21n.g1.sokoban.model.Cell;
 import pt.isel.poo.li21n.g1.sokoban.model.Dir;
@@ -31,38 +33,54 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
 
     public void run() {
         view.setViewListener(this);
+        model.setGame(context.getResources().openRawResource(R.raw.levels));
+        // not like console game
+        setLevel();
+        playLevel();
+    }
 
+    private void setLevel() {
         try {
-            model.setGame(context.getResources().openRawResource(R.raw.levels));
-
             level = model.loadNextLevel();
-            level.setObserver(this);
-            view.setPanelSize(level.getWidth(), level.getHeight());
-
-
-            playLevel();
         } catch (Loader.LevelFormatException e) {
             Log.e("Loader", "Read file: " + e + " Line " + e.getLineNumber() + " " + e.getLine());
         }
     }
 
-    private boolean playLevel() {
+    private void playLevel() {
+        level.setObserver(this);
+        view.setPanelSize(level.getWidth(), level.getHeight());
+
         updateStatus();
         loadView();
         view.useRestart(levelStarted);
-
-        //while (!level.isFinished())
-
-        return true;
     }
 
     private void play(Dir dir) {
+        level.moveMan(dir);
+
         levelStarted = (level.getMoves() == 0) ? false : true;
         view.useRestart(levelStarted);
-
-        level.moveMan(dir);
         view.updateStatusMoves(level.getMoves());
         view.updateStatusBoxes(level.getRemainingBoxes());
+
+        // check level status
+        if (checkLevelFinished()) {
+            if (checkManDeath()) {
+                Log.d("Level", "Level over and loose");
+            } else {
+                setLevel();
+                playLevel();
+            }
+        }
+    }
+
+    private boolean checkLevelFinished() {
+        return level.isFinished();
+    }
+
+    private boolean checkManDeath() {
+        return level.manIsDead();
     }
 
     private void updateStatus() {
@@ -86,6 +104,8 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
         levelStarted = false;
         view.useRestart(levelStarted);
         model.restart();
+        updateStatus();
+        loadView();
     }
 
     @Override

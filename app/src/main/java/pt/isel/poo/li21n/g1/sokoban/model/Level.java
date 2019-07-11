@@ -236,7 +236,9 @@ public class Level {
      */
     public void reset() {
         moves = 0;
-        remainingBoxes = 0;
+        /* remainingBoxes = 0; */ //found bug maybe affecting console app
+        boxInHole = false; /* bug squash */
+        manInHole = false; /* bug squash */
         cellboard = new Cell[height][width];
     }
 
@@ -337,7 +339,7 @@ public class Level {
     }
 
     public void init(Game game) {
-
+        updateRemainingBoxes(); //found bug maybe affecting console app in condition of restart level
     }
 
     public void setObserver(Observer listener) {
