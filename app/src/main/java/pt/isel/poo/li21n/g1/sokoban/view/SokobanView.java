@@ -3,8 +3,11 @@ package pt.isel.poo.li21n.g1.sokoban.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import pt.isel.poo.li21n.g1.sokoban.R;
 import pt.isel.poo.li21n.g1.sokoban.model.Dir;
@@ -21,6 +24,8 @@ public class SokobanView extends View {
     private final StatusView status;
     private final TilePanel panel;
     private final Button btnRestart;
+    private final TextView message;
+    private final Button btnOk;
 
     // we have context in here so we load images, future move to CellTile (?)
     protected static Img imgMan;
@@ -38,6 +43,8 @@ public class SokobanView extends View {
         panel = activity.findViewById(R.id.panel);
         btnRestart = activity.findViewById(R.id.btnRestart);
         btnRestart.setEnabled(false);
+        message = activity.findViewById(R.id.message);
+        btnOk = activity.findViewById(R.id.btnOk);
 
         panel.setListener(new OnTileTouchListener() {
             @Override
@@ -86,6 +93,12 @@ public class SokobanView extends View {
             @Override
             public void onClick(View v) {
                 restartLevel();
+            }
+        });
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameMessageAnswer();
             }
         });
 
@@ -150,6 +163,23 @@ public class SokobanView extends View {
     private void moveMan(Dir dir) {
         if (viewListener != null) {
             viewListener.onMoveMan(dir);
+        }
+    }
+
+    public void showGameMessage(boolean level) {
+        btnRestart.setVisibility(View.GONE);
+        if (level) {
+            message.setText(context.getResources().getString(R.string.level_win));
+        } else {
+            message.setText(context.getResources().getString(R.string.level_loose));
+        }
+        message.setVisibility(View.VISIBLE);
+        btnOk.setVisibility(View.VISIBLE);
+    }
+
+    private void gameMessageAnswer() {
+        if (viewListener != null) {
+            viewListener.onGameMessage(true);
         }
     }
 }

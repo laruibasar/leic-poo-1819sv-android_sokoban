@@ -18,15 +18,18 @@ import pt.isel.poo.li21n.g1.sokoban.view.SokobanViewListener;
 
 public class SokobanController implements SokobanViewListener, Level.Observer {
     private Context context;
+    private Activity activity;
     private final SokobanView view;
 
     private Game model;
     private Level level;
 
     private boolean levelStarted = false;
+    private boolean levelWin;
 
     public SokobanController(Activity activity, Game model, SokobanView view) {
         this.context = activity;
+        this.activity = activity;
         this.model = model;
         this.view = view;
     }
@@ -35,19 +38,17 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
         view.setViewListener(this);
         model.setGame(context.getResources().openRawResource(R.raw.levels));
         // not like console game
-        setLevel();
         playLevel();
     }
 
-    private void setLevel() {
+    private void playLevel() {
+        levelWin = false;
         try {
             level = model.loadNextLevel();
         } catch (Loader.LevelFormatException e) {
             Log.e("Loader", "Read file: " + e + " Line " + e.getLineNumber() + " " + e.getLine());
         }
-    }
 
-    private void playLevel() {
         level.setObserver(this);
         view.setPanelSize(level.getWidth(), level.getHeight());
 
@@ -57,6 +58,9 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
     }
 
     private void play(Dir dir) {
+        if (level.isFinished())
+            return;
+
         level.moveMan(dir);
 
         levelStarted = (level.getMoves() == 0) ? false : true;
@@ -67,10 +71,9 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
         // check level status
         if (checkLevelFinished()) {
             if (checkManDeath()) {
-                Log.d("Level", "Level over and loose");
+                view.showGameMessage(levelWin = false);
             } else {
-                setLevel();
-                playLevel();
+                view.showGameMessage(levelWin = true);
             }
         }
     }
@@ -101,11 +104,21 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
 
     @Override
     public void onRestartLevel() {
-        levelStarted = false;
-        view.useRestart(levelStarted);
+        view.useRestart(levelStarted = false);
         model.restart();
         updateStatus();
         loadView();
+    }
+
+    @Override
+    public void onGameMessage(boolean answer) {
+        if (answer) {
+            if (levelWin) {
+                playLevel();
+            } else {
+                activity.finish();
+            }
+        }
     }
 
     @Override
