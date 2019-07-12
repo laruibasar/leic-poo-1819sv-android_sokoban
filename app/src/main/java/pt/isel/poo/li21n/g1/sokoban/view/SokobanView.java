@@ -3,10 +3,8 @@ package pt.isel.poo.li21n.g1.sokoban.view;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pt.isel.poo.li21n.g1.sokoban.R;

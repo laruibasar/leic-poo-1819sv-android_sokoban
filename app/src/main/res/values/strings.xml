@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Sokoban</string>
-    <string name="restart">Recomeçar</string>
+    <string name="restart">Restart</string>
     <string name="ok">Ok</string>
-    <string name="level">Nível</string>
-    <string name="moves">Movimentos</string>
-    <string name="boxes">Caixas</string>
-    <string name="level_win">Ganhaste</string>
-    <string name="level_loose">Perdeste</string>
+    <string name="level">Level</string>
+    <string name="moves">Moves</string>
+    <string name="boxes">Boxes</string>
+    <string name="level_win">You Win</string>
+    <string name="level_loose">You Loose</string>
+    <string name="app_name">Sokoban</string>
 </resources>

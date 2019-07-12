@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sokoban</string>
+    <string name="boxes">Caixas</string>
+    <string name="level">Nível</string>
+    <string name="level_loose">Perdeste</string>
+    <string name="level_win">Ganhaste</string>
+    <string name="moves">Movimentos</string>
+    <string name="ok">Ok</string>
+    <string name="restart">Recomeçar</string>
+</resources>

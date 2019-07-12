@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.IOException;
-
 import pt.isel.poo.li21n.g1.sokoban.R;
 import pt.isel.poo.li21n.g1.sokoban.model.Cell;
 import pt.isel.poo.li21n.g1.sokoban.model.Dir;
