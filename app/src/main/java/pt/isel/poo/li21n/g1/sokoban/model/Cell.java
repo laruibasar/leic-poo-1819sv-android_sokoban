@@ -1,5 +1,7 @@
 package pt.isel.poo.li21n.g1.sokoban.model;
 
+import java.io.PrintWriter;
+
 /**
  * Class Cell
  *
@@ -77,4 +79,6 @@ public class Cell {
     public boolean isBoxInObjective() {
         return false;
     }
+
+    public void save(PrintWriter pw) { }
 }

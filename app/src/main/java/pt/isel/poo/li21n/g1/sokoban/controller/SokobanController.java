@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 import pt.isel.poo.li21n.g1.sokoban.R;
 import pt.isel.poo.li21n.g1.sokoban.model.Cell;
 import pt.isel.poo.li21n.g1.sokoban.model.Dir;
@@ -18,6 +22,8 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
     private Context context;
     private Activity activity;
     private final SokobanView view;
+
+    private static final String SAVE = "saved_level.txt";
 
     private Game model;
     private Level level;
@@ -39,20 +45,47 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
         playLevel();
     }
 
+    public void saveCurrentState() {
+        try {
+            FileOutputStream outputStream = context.openFileOutput(SAVE, Context.MODE_PRIVATE);
+            PrintWriter pw = new PrintWriter(outputStream);
+            level.save(pw);
+            pw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void loadCurrentState(int level, int moves) {
+        Log.d("State level", Integer.toString(level));
+        Scanner sc = new Scanner(SAVE);
+        //model.load(sc);
+    }
+
+    public int getCurrentLevel() {
+        return level.getNumber();
+    }
+
+    public int getCurrentMoves() {
+        return level.getMoves();
+    }
+
+
     private void playLevel() {
         levelWin = false;
         try {
             level = model.loadNextLevel();
+
+            level.setObserver(this);
+            view.setPanelSize(level.getWidth(), level.getHeight());
+
+            updateStatus();
+            loadView();
+            view.useRestart(levelStarted);
         } catch (Loader.LevelFormatException e) {
             Log.e("Loader", "Read file: " + e + " Line " + e.getLineNumber() + " " + e.getLine());
         }
-
-        level.setObserver(this);
-        view.setPanelSize(level.getWidth(), level.getHeight());
-
-        updateStatus();
-        loadView();
-        view.useRestart(levelStarted);
     }
 
     private void play(Dir dir) {
@@ -109,13 +142,12 @@ public class SokobanController implements SokobanViewListener, Level.Observer {
     }
 
     @Override
-    public void onGameMessage(boolean answer) {
-        if (answer) {
-            if (levelWin) {
-                playLevel();
-            } else {
-                activity.finish();
-            }
+    public void onGameMessage() {
+        if (levelWin) {
+            levelStarted = false;
+            playLevel();
+        } else {
+            activity.finish(); /* as per requested on apk for demonstration */
         }
     }
 

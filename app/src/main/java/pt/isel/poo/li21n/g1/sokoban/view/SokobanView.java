@@ -177,7 +177,10 @@ public class SokobanView extends View {
 
     private void gameMessageAnswer() {
         if (viewListener != null) {
-            viewListener.onGameMessage(true);
+            viewListener.onGameMessage();
         }
+        btnRestart.setVisibility(View.VISIBLE);
+        message.setVisibility(View.GONE);
+        btnOk.setVisibility(View.GONE);
     }
 }

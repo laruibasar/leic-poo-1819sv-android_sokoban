@@ -5,5 +5,5 @@ import pt.isel.poo.li21n.g1.sokoban.model.Dir;
 public interface SokobanViewListener {
     void onRestartLevel();
     void onMoveMan(Dir dir);
-    void onGameMessage(boolean answer);
+    void onGameMessage();
 }

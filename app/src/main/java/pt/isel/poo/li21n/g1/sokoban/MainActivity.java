@@ -10,6 +10,8 @@ import pt.isel.poo.li21n.g1.sokoban.view.SokobanView;
 
 public class MainActivity extends AppCompatActivity {
     private Game model;
+    private SokobanView view;
+    private SokobanController ctrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,14 +19,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         model = new Game();
-        SokobanView view = new SokobanView(this);
-        SokobanController ctrl = new SokobanController(this, model, view);
+        view = new SokobanView(this);
+        ctrl = new SokobanController(this, model, view);
 
         ctrl.run();
+
+        if (savedInstanceState != null) {
+            ctrl.loadCurrentState(savedInstanceState.getInt("LEVEL"),
+                                  savedInstanceState.getInt("MOVES"));
+
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        outState.putInt("LEVEL", ctrl.getCurrentLevel());
+        outState.putInt("MOVES", ctrl.getCurrentMoves());
+        ctrl.saveCurrentState();
     }
 }

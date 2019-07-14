@@ -1,5 +1,7 @@
 package pt.isel.poo.li21n.g1.sokoban.model;
 
+import java.io.PrintWriter;
+
 import pt.isel.poo.li21n.g1.sokoban.model.cell.EmptyCell;
 import pt.isel.poo.li21n.g1.sokoban.model.cell.FloorCell;
 import pt.isel.poo.li21n.g1.sokoban.model.cell.HoleCell;
@@ -49,14 +51,6 @@ public class Level {
         this.height = height;
         this.width = width;
         this.cellboard = new Cell[height][width];
-        this.moves = 0;
-        this.remainingBoxes = 0;
-
-        this.numBoxes = 0;
-        this.numObjectives = 0;
-
-        this.manInHole = false;
-        this.boxInHole = false;
     }
 
     public int getHeight() {
@@ -339,6 +333,13 @@ public class Level {
     }
 
     public void init(Game game) {
+        this.moves = 0;
+
+        this.numBoxes = 0;
+        this.numObjectives = 0;
+
+        this.manInHole = false;
+        this.boxInHole = false;
         updateRemainingBoxes(); //found bug maybe affecting console app in condition of restart level
     }
 
@@ -354,4 +355,13 @@ public class Level {
 
     }
 
+
+    public void save(PrintWriter pw) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                cellboard[i][j].save(pw);
+            }
+            pw.println();
+        }
+    }
 }
