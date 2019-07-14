@@ -1,6 +1,7 @@
 package pt.isel.poo.li21n.g1.sokoban.model;
 
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import pt.isel.poo.li21n.g1.sokoban.model.cell.EmptyCell;
 import pt.isel.poo.li21n.g1.sokoban.model.cell.FloorCell;
@@ -77,10 +78,12 @@ public class Level {
     public int getRemainingBoxes() {
         return remainingBoxes;
     }
+    public void setRemainingBoxes(int boxes) { remainingBoxes = boxes; }
 
     public int getMoves() {
         return moves;
     }
+    public void setMoves(int moves) { this.moves = moves; }
 
     /**
      * Returns the Cell at line and column asked
@@ -355,7 +358,6 @@ public class Level {
 
     }
 
-
     public void save(PrintWriter pw) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -364,4 +366,23 @@ public class Level {
             pw.println();
         }
     }
+
+    public void load(Scanner sc) {
+        for (int i = 0; i < width; i++) {
+            String str = sc.nextLine();
+            for (int j = 0; j < height; j++) {
+                char c = str.charAt(j);
+                if (c == 'a') {
+                    put(i, j, '*');
+                    put(i, j, '@');
+                } else if (c == 'b') {
+                    put(i, j, '*');
+                    put(i, j, 'B');
+                } else {
+                    put(i, j, c);
+                }
+            }
+        }
+    }
+
 }

@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             ctrl.loadCurrentState(savedInstanceState.getInt("LEVEL"),
-                                  savedInstanceState.getInt("MOVES"));
-
+                                  savedInstanceState.getInt("MOVES"),
+                                  savedInstanceState.getInt("BOXES"));
         }
     }
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putInt("LEVEL", ctrl.getCurrentLevel());
         outState.putInt("MOVES", ctrl.getCurrentMoves());
+        outState.putInt("BOXES", ctrl.getCurrentBoxes());
         ctrl.saveCurrentState();
     }
 }

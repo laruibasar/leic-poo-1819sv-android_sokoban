@@ -21,7 +21,7 @@
         app:gridLine="0"
         app:heightTiles="7"
         app:widthTiles="7"
-        app:backgroundTiles="@android:color/black"/>
+        app:backgroundTiles="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -33,6 +33,11 @@ public class Game {
         return curLevel;
     }
 
+    public Level loadLevel(int level) throws Loader.LevelFormatException {
+        levelNumber = level - 1;
+        return loadNextLevel();
+    }
+
     public void restart() {
         new Loader(createScanner()).reload(curLevel);
         curLevel.init(this);
